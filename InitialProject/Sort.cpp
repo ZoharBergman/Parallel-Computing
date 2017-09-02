@@ -5,8 +5,8 @@
 
 struct Point
 {
-	int x;
-	int y;
+	double x;
+	double y;
 	double distance;
 };
 
@@ -37,8 +37,8 @@ int readPointFromFile(Point*& arrPoints, char* fileName)
 		// Reading points from file
 		for(i = 0; i < numOfPoints; i++)
 		{
-			fscanf (file, "%d", &arrPoints[i].x);
-			fscanf (file, "%d", &arrPoints[i].y);
+			fscanf (file, "%lf", &arrPoints[i].x);
+			fscanf (file, "%lf", &arrPoints[i].y);
 		}
 
 		fclose(file);
@@ -50,7 +50,7 @@ int readPointFromFile(Point*& arrPoints, char* fileName)
 void createPointMpiDataType(MPI_Datatype& PointMPIType)
 {
 	struct Point point;	
-	MPI_Datatype type[3] = { MPI_INT, MPI_INT, MPI_DOUBLE };
+	MPI_Datatype type[3] = { MPI_DOUBLE, MPI_DOUBLE, MPI_DOUBLE };
 	int blocklen[3] = { 1, 1, 1 };
 	MPI_Aint disp[3];
 
@@ -72,9 +72,9 @@ void createCart(int numOfProcs, MPI_Comm& comm)
 	MPI_Cart_create(MPI_COMM_WORLD, 2, dim, period, reorder, &comm); 	
 }
 
-double calcDistance(int x, int y)
+double calcDistance(double x, double y)
 {
-	return sqrt((double)(x * x + y * y));
+	return sqrt((double)((double)(x * x) + (double)(y * y)));	
 }
 
 void oddEvenStep(int* myCoords, int* neighborCoords, Point& myPoint, char compareOpetor, MPI_Comm cartComm,const MPI_Datatype& PointMPIType, MPI_Status& status)
@@ -307,7 +307,7 @@ void printArr(Point*& pointsArr, int numOfPoints)
 {
 	for (int i = 0; i < numOfPoints; i++)
 	{
-		printf("(%d, %d), Dist = %.2f\n", pointsArr[i].x, pointsArr[i].y, pointsArr[i].distance);fflush(stdout);
+		printf("(%.1f, %.1f), Dist = %.2f\n", pointsArr[i].x, pointsArr[i].y, pointsArr[i].distance);fflush(stdout);
 	}
 }
 
@@ -334,6 +334,11 @@ int main(int argc,char *argv[])
 		// Calculating the distance for each point
 		for(int i = 0; i < numOfPoints; i++)
 			arrPoints[i].distance = calcDistance(arrPoints[i].x, arrPoints[i].y);
+		
+
+		// Print the array of points
+		printf("Before sort: \n");fflush(stdout);
+		printArr(arrPoints, numOfPoints);
 
 		// Sending the number of points to all processes
 		for(int i = 1; i < numprocs; i++)
@@ -368,6 +373,7 @@ int main(int argc,char *argv[])
 		setSortedPointsArr(arrSortedPoints, numOfPoints, cartComm, myPoint, myid, PointMPIType, status);		
 
 		// Print the sorted array of points
+		printf("\nAfter sort: \n");fflush(stdout);
 		printArr(arrSortedPoints, numOfPoints);
 
 		// Free array

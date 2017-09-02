@@ -1,4 +1,4 @@
-﻿Build started 02/09/2017 20:12:32.
+﻿Build started 02/09/2017 20:52:41.
      1>Project "C:\Users\Zuzu\Desktop\זהר\אפקה\שנה ג\סמסטר קיץ\מחשוב מקבילי ומבוזר\תרגילים\4\Sort\InitialProject\InitialProject.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\MPICH2\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Sort.cpp
@@ -21,4 +21,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.46
+Time Elapsed 00:00:00.55
